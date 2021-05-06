@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useContext } from "react";
 import { Text, View, StyleSheet, FlatList } from "react-native";
 import { CustomInput } from "../components/CustomInput";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -92,7 +92,6 @@ export default function Home({ navigation }) {
   const loadMoreData = () => {
     var val = index + numItems + 1;
     setIndex(val);
-    console.log("Loading more data");
     fetch(
       `https://api.edamam.com/search?app_id=94f217ed&app_key=df4054ba150dfb830540afd3f1662964&q=${text}&from=${val}&to=${
         val + numItems
@@ -112,7 +111,7 @@ export default function Home({ navigation }) {
 
   return (
     <View style={{ ...styles.container, paddingTop: insets.top }}>
-      <LinearGradient colors={["#ffffff", "#E0EAFC"]} style={styles.searchform}>
+      <LinearGradient colors={["#ECFAFC", "#E0EAFC"]} style={styles.searchform}>
         <CustomInput
           changeTextHandler={(text) => setText(text)}
           handleIconPress={handleIconPress}

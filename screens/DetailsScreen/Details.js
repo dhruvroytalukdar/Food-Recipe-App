@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Text, StyleSheet, View, Image } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Icon } from "react-native-elements";
@@ -6,17 +6,29 @@ import { FlatList } from "react-native-gesture-handler";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 
+const Tags = (props) => {
+  return (
+    <View style={styles.tags}>
+      <Text style={{ fontSize: 15, color: "white" }}>{props.item}</Text>
+    </View>
+  );
+};
+
 export default function Details({ route, navigation }) {
   const details = route.params.foodDetails;
   const insets = useSafeAreaInsets();
-  const [favorites, setFavorites] = useState(false);
-  console.log(details);
+
+  //console.log(details);
+
+  const handleDirections = () => {
+    navigation.navigate("Ingredients", { ingredients: details.ingredients });
+  };
 
   return (
     <View
       style={{
         ...styles.container,
-        paddingTop: insets.top,
+        paddingTop: insets.top + 20,
         paddingBottom: insets.bottom,
       }}
     >
@@ -36,14 +48,12 @@ export default function Details({ route, navigation }) {
           onPress={() => navigation.goBack()}
         />
         <Icon
-          name={favorites ? "favorite" : "favorite-border"}
+          name="north-east"
           type="material"
           size={32}
           containerStyle={{ alignSelf: "flex-end" }}
-          color="red"
-          onPress={() => {
-            favorites ? setFavorites(false) : setFavorites(true);
-          }}
+          color="black"
+          onPress={handleDirections}
         />
       </View>
       <Text style={styles.title}>{details.label}</Text>
@@ -54,7 +64,7 @@ export default function Details({ route, navigation }) {
             type="material"
             containerStyle={{ marginBottom: 5 }}
             size={28}
-            color="red"
+            color="#6946E8"
           />
           <Text style={{ fontSize: 14 }}>
             {parseInt(details.totalTime) === 0
@@ -68,7 +78,7 @@ export default function Details({ route, navigation }) {
             containerStyle={{ marginBottom: 5 }}
             type="material"
             size={28}
-            color="red"
+            color="#6946E8"
           />
           <Text style={{ fontSize: 14 }}>{details.totalWeight} gms</Text>
         </View>
@@ -77,7 +87,7 @@ export default function Details({ route, navigation }) {
             name="local-fire-department"
             type="material"
             size={28}
-            color="red"
+            color="#6946E8"
             containerStyle={{ marginBottom: 5 }}
           />
           <Text style={{ fontSize: 14 }}>{details.calories} cals</Text>
@@ -89,13 +99,20 @@ export default function Details({ route, navigation }) {
         source={{ uri: details.image }}
       />
       <View style={styles.bottomsection}>
-        <Text style={{ fontSize: 23, fontFamily: "Poppins-semibold" }}>
-          Ingredients
+        <Text
+          style={{
+            fontSize: 23,
+            fontFamily: "Poppins-semibold",
+            marginVertical: 15,
+            marginLeft: 3,
+          }}
+        >
+          Heath Labels
         </Text>
         <FlatList
           horizontal={true}
-          data={details.ingredientLines}
-          renderItem={(item) => <Text>{item.item}</Text>}
+          data={details.healthLabels}
+          renderItem={(item) => <Tags {...item} />}
           keyExtractor={(item) => uuidv4()}
         />
       </View>
@@ -119,7 +136,7 @@ const styles = StyleSheet.create({
   detailsection: {
     width: "100%",
     height: 40,
-    marginBottom: 5,
+    marginVertical: 9,
     flexDirection: "row",
     justifyContent: "space-evenly",
   },
@@ -127,16 +144,27 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  title: {
-    fontFamily: "Poppins-bold",
-    fontSize: 25,
-    marginTop: 20,
-    marginBottom: 15,
-    textAlign: "center",
-  },
   foodPicture: {
     width: 290,
     height: 340,
     borderRadius: 15,
+    marginVertical: 10,
+  },
+  tags: {
+    backgroundColor: "#6946E8",
+    marginRight: 5,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 25,
+    paddingHorizontal: 10,
+  },
+  title: {
+    fontFamily: "Poppins-bold",
+    fontSize: 25,
+    paddingHorizontal: 15,
+    marginTop: 20,
+    marginBottom: 15,
+    textAlign: "center",
   },
 });

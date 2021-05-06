@@ -1,17 +1,19 @@
 import Details from "./screens/DetailsScreen/Details";
 import React, { useState } from "react";
-import { StyleSheet, Text, Button } from "react-native";
+import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Home from "./screens/HomeScreen/Home";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
+import Ingredients from "./screens/DetailsScreen/Ingredients";
 
 const Stack = createStackNavigator();
 
 export default function App() {
   const [loading, setLoading] = useState(false);
+
   const getFont = () => {
     Font.loadAsync({
       "Poppins-regular": require("./assets/fonts/Poppins-Regular.ttf"),
@@ -32,6 +34,11 @@ export default function App() {
             <Stack.Screen
               name="Details"
               component={Details}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Ingredients"
+              component={Ingredients}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>
